@@ -79,6 +79,23 @@ def dlt(name):
     c.execute(insert)
     db.commit()
 
+def shownames():
+    os.system('clear')
+    c = db.cursor()
+    q = "select name from consumables;"
+    c.execute(q)
+    names = c.fetchall()
+
+    console = Console()
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column ("NAMES", justify="left")
+
+    for name in names:
+        table.add_row(str(name[0]))
+
+    console.print(table)
+
+
 def show():
     os.system('clear')
     c = db.cursor()
@@ -182,6 +199,7 @@ while True:
             
             actions = 'Select one of the actions below: \n1.Add time in Hours\n2.Add a day\n3.Change the Rating\n4.Change Conumption Ening date\n5.None\n'
             os.system('clear')
+            shownames()
             name = input("Enter the name of the Consumable(Book/Series/Movie) : ")
             action = input(actions)
             if not action.lower() in ['5','none']:
