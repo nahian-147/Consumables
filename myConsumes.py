@@ -163,10 +163,9 @@ def fulldetail(name):
     table.add_column("ID", style="dim")
     table.add_column("TYPE")
     table.add_column ("NAME", justify="left")
-    table.add_column("START DATE", justify="center")
-    table.add_column("END DATE", justify="center")
+    table.add_column("START DATE", justify="center",no_wrap=False)
+    table.add_column("END DATE", justify="center",no_wrap=False)
     table.add_column("RATING (OUT OF 10)", justify="center")
-    table.add_column("START DATE", justify="center")
     table.add_column("TOTAL TIME (IN HOURS)", justify="center")
     table.add_column("TOTAL DAYS", justify="center")
 
@@ -237,6 +236,7 @@ while True:
                 elif(typ == '3'):
                     showind('Movie')
                 elif typ == '4':
+                    shownames()
                     name = input("Enter the name of the consumable : ")
                     fulldetail(name)
                 input('\nPress any key to return to the Main Menu')
