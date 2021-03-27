@@ -12,8 +12,6 @@ How to Setup :
 1. Install all the requirements and initialize the database into mysql server using "cons.sql" file.
 2. Before running myConsumes.py edit the host, username, and password by  the following :
 
-## EDIT THIS PORTION ONLY ! ##
-
 db = mysql.connector.connect(
         host='$Your_Host_Name$',
         user='your_User_Name',
