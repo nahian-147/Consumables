@@ -31,9 +31,6 @@ def insrt(t):
     if not rating == "":
         ur = "update consumables set rating = '"+rating+"' WHERE name = '"+name+"';"
         c.execute(ur)
-    
-    #insert = """insert into consumables (type,name,consStart,consEnd,rating) 
-           # values ('"""+t+"""','"""+name+"""','"""+start+"""','"""+end+"""','"""+rating+"""');"""
 
     db.commit()
 
@@ -72,14 +69,15 @@ def chngEdate(name,date):
 
 def dlt(name):
     c = db.cursor()
-    fetch = "select name, consTime,total_days from consumables where name = '"+name+"';"
-    c.execute(ftch)
-    p = c.fetchall()
-    d = "delete from consumables where name = '"+name+"';"
+    fetch = "select id, name, consTime,total_days from consumables where name = '"+name+"';"
+    c.execute(fetch)
+    p = c.fetchone()
+    d = "delete from consumables where id = '"+str(p[0])+"';"
     insert = """insert into deleteds (name,consTime,total_days) 
-             values ('"""+name+"""','"""+p[0][1]+"""','"""+p[0][2]+"""');"""
+             values ('"""+name+"""','"""+str(p[2])+"""','"""+str(p[3])+"""');"""
     c.execute(d)
     c.execute(insert)
+    db.commit()
 
 def show():
     os.system('clear')
@@ -110,10 +108,10 @@ def show():
     table.add_column("MOVIES", justify="center")
     table.add_column("OVERALL", justify="center")
 
-    table.add_row("Total Consumption Time",str(btd[0]),str(std[0]),str(mtd[0]),str(at[0]))
-    table.add_row("Total Consumption Days",str(btd[1]),str(std[1]),str(mtd[1]),str(at[1]))
-    table.add_row("Average Rating",str(btd[2])[:4],str(std[2])[:4],str(mtd[2])[:4],str(r[0])[:4])
-    table.add_row("Total Count",str(btd[3]),str(std[3]),str(mtd[3]),str(r[1]))
+    table.add_row("TOTAL CONSUMPTION TIME (IN HOURS)",str(btd[0]),str(std[0]),str(mtd[0]),str(at[0]))
+    table.add_row("TOTAL CONSUMPTION DAYS",str(btd[1]),str(std[1]),str(mtd[1]),str(at[1]))
+    table.add_row("AVERAGE RATING",str(btd[2])[:4],str(std[2])[:4],str(mtd[2])[:4],str(r[0])[:4])
+    table.add_row("TOTAL COUNT",str(btd[3]),str(std[3]),str(mtd[3]),str(r[1]))
 
     console.print(table)
 
@@ -128,8 +126,8 @@ def showind(typ):
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column ("NAME", justify="left")
     table.add_column("TOTAL DAYS", justify="center")
-    table.add_column("TOTAL TIME", justify="center")
-    table.add_column("RATING", justify="center")
+    table.add_column("TOTAL TIME (IN HOURS)", justify="center")
+    table.add_column("RATING (OUT OF 10)", justify="center")
 
     for item in lst:
         table.add_row(str(item[0]),str(item[1]),str(item[2]),str(item[3]))
@@ -150,9 +148,9 @@ def fulldetail(name):
     table.add_column ("NAME", justify="left")
     table.add_column("START DATE", justify="center")
     table.add_column("END DATE", justify="center")
-    table.add_column("RATING", justify="center")
+    table.add_column("RATING (OUT OF 10)", justify="center")
     table.add_column("START DATE", justify="center")
-    table.add_column("TOTAL TIME", justify="center")
+    table.add_column("TOTAL TIME (IN HOURS)", justify="center")
     table.add_column("TOTAL DAYS", justify="center")
 
     table.add_row(str(lst[0]),str(lst[1]),str(lst[2]),str(lst[3]),str(lst[4]),str(lst[5]),str(lst[6]),str(lst[7]))
@@ -201,12 +199,12 @@ while True:
             else:
                 continue
         elif(choice=='3'):
-            typeOptions = 'Select one Consumable from below: \n1.Books\n2.Series\n3.Movie\n4.none'
-            os.system('clear')
-            typ = input(typeOptions)
-            if not typ.lower() in ['5','none']:
-                name = int("Type thye name of the Consumable you want to delete\n")
+            typeOptions = 'Type the name of the Consumable\nType none or -1 to cancel and return to the main menu\n'
+            name = input(typeOptions)
+            if not name.lower() in ['none','-1']:
                 dlt(name)
+                print('Record Has been Dleted !!!')
+                input("Press any key to return to the Main Menu")
             else:
                 continue
         elif(choice=='4'):
@@ -221,7 +219,7 @@ while True:
                 elif(typ == '3'):
                     showind('Movie')
                 elif typ == '4':
-                    name = input("Enter the name of the conumable : ")
+                    name = input("Enter the name of the consumable : ")
                     fulldetail(name)
                 input('\nPress any key to return to the Main Menu')
             else:
