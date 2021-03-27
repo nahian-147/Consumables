@@ -16,8 +16,7 @@ db = mysql.connector.connect(
         host='$Your_Host_Name$',
         user='your_User_Name',
         password='Your_Password',
-        database='CONSUMABLES'
-        )
+        database='CONSUMABLES')
 
 3. After editing the source code run the program using "python3 myConsumes.py"
 
