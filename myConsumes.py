@@ -27,7 +27,7 @@ def insrt(t):
         c.execute(us)
     if not end == "":
         ue = "update consumables set consEnd = '"+end+"' WHERE name = '"+name+"';"
-        c,execute(ue)
+        c.execute(ue)
     if not rating == "":
         ur = "update consumables set rating = '"+rating+"' WHERE name = '"+name+"';"
         c.execute(ur)
