@@ -115,15 +115,18 @@ def showind(typ):
     query = "select name,total_days,consTime,rating from consumables where type = '"+typ+"';"
     c.execute(query)
     lst = c.fetchall()
-    nms = 'NAME'
-    TD = 'TOTAL DAYS'
-    TT = 'TOTAL TIME'
-    R = 'RATING'
-    print(f"{nms:50} || {TD:10} || {TT:10} || {R:10} ||")
-    line = "======================================================================================================"
-    print(line)
+
+    console = Console()
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column ("NAME", justify="left")
+    table.add_column("TOTAL DAYS", justify="center")
+    table.add_column("TOTAL TIME", justify="center")
+    table.add_column("RATING", justify="center")
+
     for item in lst:
-        print(f"{item[0]:50} || {item[1]:10} || {item[2]:10} || {item[3]:10} ||")
+        table.add_row(str(item[0]),str(item[1]),str(item[2]),str(item[3]))
+
+    console.print(table)
 
 
 def fulldetail(name):
@@ -134,15 +137,15 @@ def fulldetail(name):
 
     console = Console()
     table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("ID", style="dim", width=12)
+    table.add_column("ID", style="dim")
     table.add_column("TYPE")
-    table.add_column ("NAME", justify="right")
-    table.add_column("START DATE", justify="right")
-    table.add_column("END DATE", justify="right")
-    table.add_column("RATING", justify="right")
-    table.add_column("START DATE", justify="right")
-    table.add_column("TOTAL TIME", justify="right")
-    table.add_column("TOTAL DAYS", justify="right")
+    table.add_column ("NAME", justify="left")
+    table.add_column("START DATE", justify="center")
+    table.add_column("END DATE", justify="center")
+    table.add_column("RATING", justify="center")
+    table.add_column("START DATE", justify="center")
+    table.add_column("TOTAL TIME", justify="center")
+    table.add_column("TOTAL DAYS", justify="center")
 
     table.add_row(str(lst[0]),str(lst[1]),str(lst[2]),str(lst[3]),str(lst[4]),str(lst[5]),str(lst[6]),str(lst[7]))
 
