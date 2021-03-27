@@ -1,5 +1,7 @@
 import os
 import mysql.connector
+from rich.console import Console
+from rich.table import Column,Table
 
 db = mysql.connector.connect(
         host='localhost',
@@ -108,6 +110,46 @@ def show():
     print(line+tt+line+td+line+av+line+cnt+line)
 
 
+def showind(typ):
+    c = db.cursor()
+    query = "select name,total_days,consTime,rating from consumables where type = '"+typ+"';"
+    c.execute(query)
+    lst = c.fetchall()
+    nms = 'NAME'
+    TD = 'TOTAL DAYS'
+    TT = 'TOTAL TIME'
+    R = 'RATING'
+    print(f"{nms:50} || {TD:10} || {TT:10} || {R:10} ||")
+    line = "======================================================================================================"
+    print(line)
+    for item in lst:
+        print(f"{item[0]:50} || {item[1]:10} || {item[2]:10} || {item[3]:10} ||")
+
+
+def fulldetail(name):
+    c = db.cursor()
+    query = "select * from consumables where name = '"+name+"';"
+    c.execute(query)
+    lst = c.fetchone()
+
+    console = Console()
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("ID", style="dim", width=12)
+    table.add_column("TYPE")
+    table.add_column ("NAME", justify="right")
+    table.add_column("START DATE", justify="right")
+    table.add_column("END DATE", justify="right")
+    table.add_column("RATING", justify="right")
+    table.add_column("START DATE", justify="right")
+    table.add_column("TOTAL TIME", justify="right")
+    table.add_column("TOTAL DAYS", justify="right")
+
+    table.add_row(str(lst[0]),str(lst[1]),str(lst[2]),str(lst[3]),str(lst[4]),str(lst[5]),str(lst[6]),str(lst[7]))
+
+    console.print(table)
+
+
+
 options = "1.Add a Consumable\n2.Edit a Consumable\n3.Delete a Consumable\n4.See the list of consumables and individually\n5.See overall info\n6.Exit\n"
 
 while True:
@@ -148,7 +190,7 @@ while True:
             else:
                 continue
         elif(choice=='3'):
-            typeOptions = 'Select one Consumable from below: \n1.Books\n2.Series\n3.Movie\n4.Pick One\n5.None'
+            typeOptions = 'Select one Consumable from below: \n1.Books\n2.Series\n3.Movie\n4.none'
             os.system('clear')
             typ = input(typeOptions)
             if not typ.lower() in ['5','none']:
@@ -157,12 +199,20 @@ while True:
             else:
                 continue
         elif(choice=='4'):
-            typeOptions = 'Select one Consumable from below: \n1.Books\n2.Series\n3.Movie\n4.None\n'
+            typeOptions = 'Select one Consumable from below: \n1.Book\n2.Series\n3.Movie\n4.Pick One\n5.None\n'
             os.system('clear')
             typ = input(typeOptions)
-            if not typ.lower() in ['4','none']:
-                print('You have chosen',typ)
-                input('Press any key to exit')
+            if not typ.lower() in ['5','none']:
+                if(typ=='1'):
+                    showind('Book')
+                elif(typ=='2'):
+                    showind('Series')
+                elif(typ == '3'):
+                    showind('Movie')
+                elif typ == '4':
+                    name = input("Enter the name of the conumable : ")
+                    fulldetail(name)
+                input('\nPress any key to return to the Main Menu')
             else:
                 continue
         elif(choice=='5'):
