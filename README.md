@@ -12,7 +12,7 @@ How to Setup :
 1. Install all the requirements and initialize the database into mysql server using "cons.sql" file.
 2. Before running myConsumes.py edit the host, username, and password by  the following :
 
-# EDIT THIS PORTION ONLY ! #
+## EDIT THIS PORTION ONLY ! ##
 
 db = mysql.connector.connect(
         host='$Your_Host_Name$',
@@ -20,7 +20,6 @@ db = mysql.connector.connect(
         password='Your_Password',
         database='CONSUMABLES' # no need to change !
         )
-# ---------------------------#
 
 3. After editing the source code run the program using "python3 myConsumes.py"
 
