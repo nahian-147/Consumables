@@ -82,6 +82,7 @@ def dlt(name):
     c.execute(insert)
 
 def show():
+    os.system('clear')
     c = db.cursor()
     book = "select sum(consTime),sum(total_days),avg(rating),count(type) from consumables where type = 'Book';"
     c.execute(book)
@@ -101,13 +102,20 @@ def show():
     c.execute(alltype)
     at = c.fetchone()
 
-    tt = "\nTotal Time spent in,\tBooks  "+str(btd[0])+"\tSeries  "+str(+std[0])+"\tMovies  "+str(mtd[0])+"\tOverall  "+str(at[0])+"\n"
-    td = "\nTotal Days spent in,\tBooks  "+str(btd[1])+"\tSeries  "+str(+std[1])+"\tMovies  "+str(mtd[1])+"\tOverall  "+str(at[1])+"\n"
-    av = "\nAverage rating of,\tBooks  "+str(btd[2])+"\tSeries  "+str(+std[2])+"\tMovies  "+str(mtd[2])+"\tOverall  "+str(r[0])+"\n"
-    cnt = "\nTotal count of\tBooks  "+str(btd[3])+"\tSeries  "+str(+std[3])+"\tMovies  "+str(mtd[3])+"\tOverall  "+str(at[1])+"\n"
-    line = "\n======================================================================================================================\n"
+    console = Console()
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column ("INFO", justify="left")
+    table.add_column("BOOKS", justify="center")
+    table.add_column("SERIES", justify="center")
+    table.add_column("MOVIES", justify="center")
+    table.add_column("OVERALL", justify="center")
 
-    print(line+tt+line+td+line+av+line+cnt+line)
+    table.add_row("Total Consumption Time",str(btd[0]),str(std[0]),str(mtd[0]),str(at[0]))
+    table.add_row("Total Consumption Days",str(btd[1]),str(std[1]),str(mtd[1]),str(at[1]))
+    table.add_row("Average Rating",str(btd[2])[:4],str(std[2])[:4],str(mtd[2])[:4],str(r[0])[:4])
+    table.add_row("Total Count",str(btd[3]),str(std[3]),str(mtd[3]),str(r[1]))
+
+    console.print(table)
 
 
 def showind(typ):
@@ -220,7 +228,7 @@ while True:
                 continue
         elif(choice=='5'):
             show()
-            response = input("Press Any key to go to the Main menu")
+            response = input("\nPress Any key to go to the Main menu")
             if response.lower() in ['1','cancel']:
                 continue
     else:
